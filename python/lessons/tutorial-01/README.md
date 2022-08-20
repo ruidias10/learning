@@ -3,9 +3,7 @@
 ## repository purpose
 this repository was created to follow a Udemy course
 
-#
 ## development environment
-
 ### pyenv config
 ```
 $ pyenv install 3.10.5

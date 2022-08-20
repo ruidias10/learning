@@ -1,2 +1,4 @@
 # learning
-Learning is a generic repository for studying technologies
+learning is a generic repository for studying some technologies:
+- php
+- python
