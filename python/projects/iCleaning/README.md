@@ -29,3 +29,17 @@ $ cd iCleaning
 
 $ python manage.py startapp appAdmin
 ```
+
+### django migrate
+```
+$ python manage.py migrate
+```
+
+### docker
+```
+$ docker-compose up -d 
+$ docker-compose down
+
+$ docker system df
+```
+
