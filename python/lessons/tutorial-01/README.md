@@ -27,7 +27,7 @@ $ deactivate / exit
 $ poetry run python script.py
 ```
 
-### poetry install package
+### poetry install package (after poetry shell)
 ```
 $ poetry add sqlalchemy 
 $ poetry add pymysql

@@ -1,6 +1,5 @@
 # learning.python.iCleaning
 
-## repository purpose
 this repository was created to follow a Treinaweb course
 
 ## development environment

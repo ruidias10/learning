@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'iCleaning.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'iCleaning',
+        'NAME': 'icleaning-django',
         'HOST': '127.0.0.1',
         'USER': 'root',
         'PASSWORD': 'password',        
