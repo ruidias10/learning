@@ -32,3 +32,8 @@ $ poetry run python script.py
 $ poetry add sqlalchemy 
 $ poetry add pymysql
 ```
+
+### python
+```
+python -m tokenize lesson-02.py
+```

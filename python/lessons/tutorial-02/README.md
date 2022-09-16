@@ -17,9 +17,19 @@ $ deactivate
 $ pip freeze
 $ pip install pytest
 $ pip install django
+$ pip install -r requirements.txt
 ```
 
-### django-admin
+### django-admin (startproject)
 ```
 $ django-admin --version
+$ django-admin startproject project .
+```
+
+### manage.py (startapp)
+```
+$ python manage.py --help
+$ python manage.py runserver
+
+$ python manage.py startapp app_recipes
 ```
