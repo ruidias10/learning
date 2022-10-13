@@ -4,6 +4,8 @@ import time
 
 from typing import List, Type, TypeVar
 
+start = time.perf_counter()
+
 
 class Account:
 
@@ -46,7 +48,7 @@ def check_total_money_in_bank(accounts: List[Account], amount: int):
 
 
 def services(accounts, amount):
-    for _ in range(1, 1000):
+    for _ in range(1, 10_000):
         account_1, account_2 = two_random_accounts(accounts)
         account_1.transfer(account_2, random.randint(1, 100))
         check_total_money_in_bank(accounts, amount)
@@ -86,3 +88,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    finish = time.perf_counter()
+    print(f"Finished in {round(finish-start, 3)} secound(s)")
