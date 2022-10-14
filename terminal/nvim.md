@@ -1,5 +1,7 @@
 # [vim] Guia básico
 
+[spacevim](https://spacevim.org/documentation/#core-pillars)
+
 ### Basico
 ```
 :q!          # Força a saida
