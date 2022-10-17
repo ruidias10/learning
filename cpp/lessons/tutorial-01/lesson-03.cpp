@@ -9,7 +9,7 @@ int main() {
   y = 20;
   p = x * y;
 
-  std::cout << mensagem << p << "\n";
+  std::cout << mensagem << p << std::endl;
 
   return 0;
 }
