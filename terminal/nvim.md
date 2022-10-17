@@ -53,3 +53,16 @@ p            # Past
 d + j        # Apaga a linha selecionada e a de baixo
 d + k        # Apaga a linha selecionada e a de cima
 ```
+
+
+### Nerdtree
+```
+<F3>         # Toggle
+R            # Recarrega a lista
+
+K            # Nova pasta
+
+N            # Novo ficheiro
+r            # Rename ficheiro
+d            # Apaga ficheiro
+```
