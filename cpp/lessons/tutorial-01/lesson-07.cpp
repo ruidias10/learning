@@ -15,7 +15,7 @@ int main() {
             cin >> userinput;
             escala = stoi(userinput);
         } catch (exception &err) {
-            cout << "Tem de inserir um numero inteiro!!!" << endl;
+            cout << "Tem de inserir um numero!!!" << endl;
         }
     }
     
