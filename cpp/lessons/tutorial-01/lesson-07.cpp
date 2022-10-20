@@ -10,9 +10,9 @@ int main() {
     
     while (escala < 1 || escala > 10) {
         cout << "Indique um valor entre 1 e 10: ";
-        
+        cin >> userinput;
+
         try {
-            cin >> userinput;
             escala = stoi(userinput);
         } catch (exception &err) {
             cout << "Tem de inserir um numero!!!" << endl;
