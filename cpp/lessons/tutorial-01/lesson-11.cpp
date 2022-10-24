@@ -23,13 +23,13 @@ int main() {
 
     int count = 1;
 
-    while (count < 10) {
+    while (++count < 10) {
         cout << count << "x" << count << "=" << count * count << "\n";
-        count++;
+        // count++;
     }
 
-    cout << "\n";
 
+    cout << "\n";
 
     return 0;
 }
