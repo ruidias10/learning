@@ -11,7 +11,8 @@ int main() {
     cin >> limit;
 
     for (int i = 0; i <= limit; i++) {
-        cout << i << "^" << i << " = "<< i*i << endl;
+        int k = i+1;
+        cout << k << "^" << k << " = "<< k*k << endl;
     }
 
     cout << "\n";
