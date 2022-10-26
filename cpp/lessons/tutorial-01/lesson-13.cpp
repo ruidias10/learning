@@ -9,7 +9,7 @@ int main() {
 
     while(true) {
         num = 0;
-        computer = rand() % 10 + 1;
+        computer = rand() % 11;
 
         while (num < 1 || num > 10) {
             cout << "Indique um numero entre 1 e 10: ";
