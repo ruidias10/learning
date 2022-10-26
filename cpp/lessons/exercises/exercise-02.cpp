@@ -38,45 +38,66 @@ int main() {
     jogador2 = jogador(size, opcoes, "jogador 2");
 
 
-    if (jogador1 == "Pedra") {
-        if (jogador2 == "Pedra") {
-            cout << " > Resultador: Empate!";
-        } else if (jogador2 == "Papel") {
-            cout << " > Resultador: Jogador 2 ganhou";            
-        } else if (jogador2 == "Tesoura") {
-            cout << " > Resultador: Jogador 1 ganhou";            
-        } else {
-            cout << " > Resultador: Opcao invalida!";
-        }       
-    }
 
-    else if (jogador1 == "Papel") {
-        if (jogador2 == "Pedra") {
-            cout << " > Resultador: Jogador 1 ganhou";   
-        } else if (jogador2 == "Papel") {
-            cout << " > Resultador: Empate!";       
-        } else if (jogador2 == "Tesoura") {
-            cout << " > Resultador: Jogador 2 ganhou";            
-        } else {
-            cout << " > Resultador: Opcao invalida!";
-        }       
+    if (jogador1 == jogador2) {
+        cout << " > Resultador: Empate!";
     }
-
-    else if (jogador1 == "Tesoura") {
-        if (jogador2 == "Pedra") {
-            cout << " > Resultador: Jogador 2 ganhou";   
-        } else if (jogador2 == "Papel") {
-            cout << " > Resultador: Jogador 1 ganhou";    
-        } else if (jogador2 == "Tesoura") {
-            cout << " > Resultador: Empate!";            
-        } else {
-            cout << " > Resultador: Opcao invalida!";
-        }       
-    }  
+    // J1 vence
+    else if (
+       (jogador1 == "Pedra" && jogador1 == "Tesoura") ||
+       (jogador1 == "Tesoura" && jogador1 == "Papel") ||
+       (jogador1 == "Papel" && jogador1 == "Pedra")
+    ) {
+        cout << " > Resultador: Jogador 1 ganhou"; 
+    }
 
     else {
-        cout << " > Resultador: Opcao invalida!";
-    }       
+        cout << " > Resultador: Jogador 2 ganhou";
+    }
+
+
+
+    /*
+        if (jogador1 == "Pedra") {
+            if (jogador2 == "Pedra") {
+                cout << " > Resultador: Empate!";
+            } else if (jogador2 == "Papel") {
+                cout << " > Resultador: Jogador 2 ganhou";            
+            } else if (jogador2 == "Tesoura") {
+                cout << " > Resultador: Jogador 1 ganhou";            
+            } else {
+                cout << " > Resultador: Opcao invalida!";
+            }       
+        }
+
+        else if (jogador1 == "Papel") {
+            if (jogador2 == "Pedra") {
+                cout << " > Resultador: Jogador 1 ganhou";   
+            } else if (jogador2 == "Papel") {
+                cout << " > Resultador: Empate!";       
+            } else if (jogador2 == "Tesoura") {
+                cout << " > Resultador: Jogador 2 ganhou";            
+            } else {
+                cout << " > Resultador: Opcao invalida!";
+            }       
+        }
+
+        else if (jogador1 == "Tesoura") {
+            if (jogador2 == "Pedra") {
+                cout << " > Resultador: Jogador 2 ganhou";   
+            } else if (jogador2 == "Papel") {
+                cout << " > Resultador: Jogador 1 ganhou";    
+            } else if (jogador2 == "Tesoura") {
+                cout << " > Resultador: Empate!";            
+            } else {
+                cout << " > Resultador: Opcao invalida!";
+            }       
+        }  
+
+        else {
+            cout << " > Resultador: Opcao invalida!";
+        }   
+    */    
 
 
     cout << endl << "-------------------------------" << endl;
