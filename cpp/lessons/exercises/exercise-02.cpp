@@ -50,7 +50,7 @@ int main() {
     ) {
         cout << " > Resultador: Jogador 1 ganhou"; 
     }
-
+    
     else {
         cout << " > Resultador: Jogador 2 ganhou";
     }

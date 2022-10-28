@@ -5,6 +5,8 @@ using namespace std;
 int main() {
 
     int list[5];
+    //int list[] = {1, 2, 3, 4, 5};
+    //int list[5] = {1, 2, 3, 4, 5};
     int size = sizeof(list) / sizeof(int);
 
     for (int i = 0; i < size; i++) {
