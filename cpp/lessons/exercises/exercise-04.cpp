@@ -107,6 +107,8 @@ void play(struct Player *ptr_player, char game_board[ROWS][COLUMNS]) {
 
 // Verifica se alguem ganhou
 char check_winner(char game_board[ROWS][COLUMNS]) {
+    bool no_winner = false;
+
     for (int i = 0; i < ROWS; i++) {
         if (game_board[i][0] != '-' && game_board[i][0] == game_board[i][1] && game_board[i][1] == game_board[i][2]) {
             return game_board[i][0];
@@ -127,7 +129,29 @@ char check_winner(char game_board[ROWS][COLUMNS]) {
         return game_board[2][0];
     }  
 
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLUMNS; j++) {
+            if (game_board[i][j] == '-') {
+               no_winner = true; 
+            }
+        }
+    }
+
+    if (!no_winner) {
+        return 'e';
+    }
+
     return '-';
+}
+
+
+// Restart game_board
+void restart_game_board(char game_board[ROWS][COLUMNS]) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLUMNS; j++) {
+            game_board[i][j] = '-';
+        }
+    }
 }
 
 
@@ -137,14 +161,19 @@ void winner(struct Player *ptr_player, char game_board[ROWS][COLUMNS]) {
     cout << "Vamos continuar a jogar!" << endl;
 
     ptr_player->points++;
-    
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLUMNS; j++) {
-            game_board[i][j] = '-';
-        }
-    }
 
+    restart_game_board(game_board);
 }
+
+// Sem vencedor
+void no_winner(char game_board[ROWS][COLUMNS]) {
+    cout << "Empataram" << endl;
+    cout << "Vamos continuar a jogar!" << endl;
+
+    restart_game_board(game_board);
+}
+
+
 
 
 int main() {
@@ -158,7 +187,7 @@ int main() {
     char check;
     char game_board[ROWS][COLUMNS] = { {'-','-','-'}, {'-','-','-'}, {'-','-','-'} };
 
-    for (int i = 0; i <= ROWS * COLUMNS; i++) {
+    do {
         print_header(ptr_player1, ptr_player2);
         print_board(game_board);
 
@@ -179,8 +208,11 @@ int main() {
         }
         else if (check == ptr_player2->piece) {
             winner(ptr_player1, game_board);
-        }        
-    }
+        } else if (check == 'e') {
+            no_winner(game_board);
+        }    
+
+    } while(true);
 
     return 0;
 }
