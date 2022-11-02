@@ -205,8 +205,7 @@ int main() {
 
         if (check == ptr_player1->piece) {
             winner(ptr_player1, game_board);
-        }
-        else if (check == ptr_player2->piece) {
+        } else if (check == ptr_player2->piece) {
             winner(ptr_player1, game_board);
         } else if (check == 'e') {
             no_winner(game_board);
