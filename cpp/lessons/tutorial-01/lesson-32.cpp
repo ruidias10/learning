@@ -48,10 +48,9 @@ int main() {
 
 
     vector<Cancao> cancoes;
-    cancoes.push_back(new Cancao("Amish Paradise", "Weird AI", 1996));
-    cancoes.push_back(new Cancao("Sete Mares", "Setima Legiao", 1997));
-    cancoes.push_back(new Cancao("Siga a Malta", "Galandum Galundaina", 2015));
-
+    cancoes.push_back(Cancao("Amish Paradise", "Weird AI", 1996));
+    cancoes.push_back(Cancao("Sete Mares", "Setima Legiao", 1997));
+    cancoes.push_back(Cancao("Siga a Malta", "Galandum Galundaina", 2015));
 
     return 0;
 }
