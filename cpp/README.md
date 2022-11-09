@@ -8,6 +8,5 @@ $ g++ -lasan file.cpp
 
 $ xxd a.out
 
-$ htop
 $ nvtop
 ```

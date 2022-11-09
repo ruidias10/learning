@@ -69,7 +69,7 @@ void print_board(char game_board[ROWS][COLUMNS]) {
 }
 
 
-// Validad se a jogada e valida
+// Valida se a jogada e valida
 bool validate_play(int row, int column, char game_board[ROWS][COLUMNS]) {
     if (row < 0 || row > ROWS-1) {
         cout << "Ops, o valor \"" <<  row << "\" inserido para a linha nao e valido" << endl;
@@ -93,6 +93,10 @@ bool validate_play(int row, int column, char game_board[ROWS][COLUMNS]) {
 // Jogada do utilizador
 void play(struct Player *ptr_player, char game_board[ROWS][COLUMNS]) {
     int row, column;
+
+    // 1 2 3 4 5 6 7 8 9 => Matriz -> Vector
+    // (input - 1) / 3 => LINHA
+    // (input - 1) % 3 => COLUNA
 
     do {
         cout << ptr_player->name << " \""<< ptr_player->piece <<"\" " << "indique um numero enter [0-" << ROWS-1 << "] para a linha: ";
