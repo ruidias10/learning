@@ -1,5 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <string>
+#include <limits>
+#include <sstream>
 
 //https://cplusplus.com/reference/vector/vector/pop_back/
 
@@ -10,40 +13,40 @@ class Editora {
     public:
         string nome;
         string artista;
-        int anoGravacao;
+        int ano;
         vector<string> cancoes;
 
-        Editora(string nome, string artista, int anoGravacao, vector<string> cancoes = {}) {
+        Editora(string nome, string artista, int ano, vector<string> cancoes = {}) {
             this->nome = nome;
             this->artista = artista;
-            this->anoGravacao = anoGravacao;
+            this->ano = ano;
             this->cancoes = cancoes;
             
             cout << "+ Construtor " << this->nome << endl; 
         }
 
 
-        string setNome() {
+        string getNome() {
             return this->nome;
         }
-        void getNome(string nome) {
+        void setNome(string nome) {
             this->nome = nome;
         }
 
 
-        string setArtista() {
+        string getArtista() {
             return this->artista;
         }
-        void getArtista(string artista) {
+        void setArtista(string artista) {
             this->artista = artista;
         }    
 
 
-        int setAnoGravacao() {
-            return this->anoGravacao;
+        int getano() {
+            return this->ano;
         }
-        void getAnoGravacao(int anoGravacao) {
-            this->anoGravacao = anoGravacao;
+        void setano(int ano) {
+            this->ano = ano;
         }                
 
 
@@ -82,8 +85,16 @@ class Editora {
             }
 
             return false;
-
         }           
+
+
+        void listarCancoes() {
+            int size = this->cancoes.size();
+
+            for (int i = 0; i < size; i++) {
+               cout << "     > " << this->cancoes[i] << endl;  
+            }
+        }
 
 
         void print() {
@@ -91,7 +102,7 @@ class Editora {
 
             cout << "   > Nome: " << this->nome << endl; 
             cout << "   > Artista: " << this->artista << endl; 
-            cout << "   > Ano de gravacao: " << this->anoGravacao << endl; 
+            cout << "   > Ano de gravacao: " << this->ano << endl; 
 
             cout << "   > Lista de cancoes: " << endl;  
             for (int i = 0; i < size; i++) {
@@ -137,7 +148,6 @@ int main() {
     e3->removeCancao("Cancao 3");
     e3->print();
 
-
     delete e1; 
     delete e2; 
     delete e3;
@@ -165,6 +175,96 @@ int main() {
     editoras2.push_back(sony);
     editoras2.push_back(xpto);
     
+
+
+    // =======================================================================
+    int inputInt;
+    string inputString;
+    bool continuar = true;
+
+    vector<Editora> listaEditoras = {};
+    Editora UniversalMusic = Editora("Universal Music", "", 0);
+
+    listaEditoras.push_back(UniversalMusic);
+
+    while (continuar) {
+        cout << endl << endl << "Menu das Editoras" << endl;
+        cout << "Escolha uma opcao: " << endl;
+        cout << "\t[1] - Adicionar uma editora" << endl;
+
+        cin >> inputInt;
+
+        switch (inputInt) {
+            case 1: 
+                int anoNovaEditora;
+                string nomeNovaEditora;
+                vector<string> listaCancoesNovaEdotora = {};
+
+                cout << "Nome da editora: " << endl;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');  
+                getline(cin, nomeNovaEditora);   
+
+                cout << "Ano da editora: " << endl;
+                cin >> anoNovaEditora;    
+
+                cout << "Adicione lista de cancoes separada por virgulas (,): " << endl;   
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');  
+                getline(cin, inputString);   
+                
+
+                stringstream streamMusicas(inputString);
+
+                while (streamMusicas.good()) {
+                    string token;
+                    getline(streamMusicas, token, ',');
+                    cout << token << endl;
+                    listaCancoesNovaEdotora.push_back(token);
+                }
+
+                Editora x(nomeNovaEditora, "", anoNovaEditora, listaCancoesNovaEdotora);
+                listaEditoras.push_back(x);
+
+            break;
+        }
+
+
+        cout << endl << endl << "Menu da Editora Universal Music" << endl;
+        cout << "Escolha uma opcao: " << endl;
+        cout << "\t[1] - Adicionar uma cancao" << endl;
+        cout << "\t[2] - Remover uma cancao" << endl;
+        cout << "\t[3] - Listar cancoes" << endl;
+        cout << endl << "\t[0] - Sair" << endl;
+
+        cin >> inputInt;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');  
+
+        switch (inputInt) {
+            case 0:
+                continuar = false;
+                break;
+
+            case 1:
+                cout << "Escolha o nome da cancao a adicionar: " << endl;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                getline(cin, inputString);
+                UniversalMusic.adicionarCancao(inputString);
+                break;
+
+            case 2:
+                cout << "Escolha o nome da cancao a remover: " << endl;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                getline(cin, inputString);
+                UniversalMusic.removeCancao(inputString);
+                break;       
+
+            case 3:
+                cout << "Lista de cancoes da editora " << UniversalMusic.getNome() << endl;
+                UniversalMusic.listarCancoes();
+                cout << endl;
+                break;                            
+        }
+    }
+
 
     return 0;
 }
