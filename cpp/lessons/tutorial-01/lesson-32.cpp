@@ -117,6 +117,48 @@ class Editora {
 };
 
 
+
+void menuEditora(Editora editora) {
+    int inputInt;
+    string inputString;
+
+    cout << endl << endl << "Menu da Editora " << editora.getNome() << endl;
+    cout << "Escolha uma opcao: " << endl;
+    cout << "\t[1] - Adicionar uma cancao" << endl;
+    cout << "\t[2] - Remover uma cancao" << endl;
+    cout << "\t[3] - Listar cancoes" << endl;
+    cout << endl << "\t[0] - Sair do menu" << endl;
+
+    cin >> inputInt;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');  
+
+    switch (inputInt) {
+        case 0:
+            break;
+
+        case 1:
+            cout << "Escolha o nome da cancao a adicionar: " << endl;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getline(cin, inputString);
+            editora.adicionarCancao(inputString);
+            break;
+
+        case 2:
+            cout << "Escolha o nome da cancao a remover: " << endl;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getline(cin, inputString);
+            editora.removeCancao(inputString);
+            break;       
+
+        case 3:
+            cout << "Lista de cancoes da editora " << editora.getNome() << endl;
+            editora.listarCancoes();
+            cout << endl;
+            break;                            
+    }
+}
+
+
 int main() {
 
     vector<string> listaCancoes = { "Amish Paradise", "Sete Mares", "Siga a Malta" };
@@ -184,6 +226,13 @@ int main() {
 
     vector<Editora> listaEditoras = {};
     Editora UniversalMusic = Editora("Universal Music", "", 0);
+    
+    Editora *sony2 = new Editora("Sony", "", 1950);
+    cout << "&sony2 " << &sony2 << " " << sony2->getNome() << endl;
+    sony2 = &UniversalMusic;
+    cout << "&sony2 " << &sony2 << " " << sony2->getNome() << endl;
+    //delete sony2;  // apaga a UniversalMusic
+    cout << "UniversalMusic "  << UniversalMusic.getNome() << endl;
 
     listaEditoras.push_back(UniversalMusic);
 
@@ -191,11 +240,22 @@ int main() {
         cout << endl << endl << "Menu das Editoras" << endl;
         cout << "Escolha uma opcao: " << endl;
         cout << "\t[1] - Adicionar uma editora" << endl;
+        cout << "\t[2] - Remover uma editora" << endl;
+        cout << "\t[3] - Ver uma editora" << endl;
+        cout << "\t[4] - Listar as editoras" << endl;
+        cout << endl << "\t[0] - Sair" << endl;
 
         cin >> inputInt;
 
         switch (inputInt) {
-            case 1: 
+            case 0:
+            {
+                continuar = false;
+                break; 
+            } 
+
+            case 1:
+            {
                 int anoNovaEditora;
                 string nomeNovaEditora;
                 vector<string> listaCancoesNovaEdotora = {};
@@ -211,7 +271,6 @@ int main() {
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');  
                 getline(cin, inputString);   
                 
-
                 stringstream streamMusicas(inputString);
 
                 while (streamMusicas.good()) {
@@ -223,46 +282,83 @@ int main() {
 
                 Editora x(nomeNovaEditora, "", anoNovaEditora, listaCancoesNovaEdotora);
                 listaEditoras.push_back(x);
-
-            break;
-        }
-
-
-        cout << endl << endl << "Menu da Editora Universal Music" << endl;
-        cout << "Escolha uma opcao: " << endl;
-        cout << "\t[1] - Adicionar uma cancao" << endl;
-        cout << "\t[2] - Remover uma cancao" << endl;
-        cout << "\t[3] - Listar cancoes" << endl;
-        cout << endl << "\t[0] - Sair" << endl;
-
-        cin >> inputInt;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');  
-
-        switch (inputInt) {
-            case 0:
-                continuar = false;
+                
                 break;
-
-            case 1:
-                cout << "Escolha o nome da cancao a adicionar: " << endl;
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                getline(cin, inputString);
-                UniversalMusic.adicionarCancao(inputString);
-                break;
+            }
 
             case 2:
-                cout << "Escolha o nome da cancao a remover: " << endl;
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                getline(cin, inputString);
-                UniversalMusic.removeCancao(inputString);
-                break;       
+            {
+                cout << "Indique o nome da editora a remover: " << endl;   
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');  
+                getline(cin, inputString);                 
+
+                int size = listaEditoras.size();
+
+                if (!listaEditoras.empty()) {
+                    for (int i = 0; i < size; i++) { 
+                        Editora item = listaEditoras[i];
+
+                        if (item.getNome() == inputString) {
+                            listaEditoras.erase(listaEditoras.begin() + i); 
+                            break;
+                        }
+                    }
+                }                
+
+                break; 
+            } 
 
             case 3:
-                cout << "Lista de cancoes da editora " << UniversalMusic.getNome() << endl;
-                UniversalMusic.listarCancoes();
-                cout << endl;
-                break;                            
+            {
+                cout << "Indique o nome da editora que deseja ver: " << endl;   
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');  
+                getline(cin, inputString);                 
+
+                bool existe = false;
+                int size = listaEditoras.size();
+
+                if (!listaEditoras.empty()) {
+                    for (int i = 0; i < size; i++) { 
+                        Editora item = listaEditoras[i];
+
+                        if (item.getNome() == inputString) {
+                            menuEditora(item);
+                            existe = true;
+                            break;
+                        }
+                    }
+                } 
+
+                if (!existe) {
+                    cout << "A editora " << inputString << " nao existe." << endl;  
+                } 
+
+                break; 
+            }  
+
+            case 4:
+            {
+                cout << "Lista das editoras: " << endl;
+
+                int size = listaEditoras.size();
+
+                if (!listaEditoras.empty()) {
+                    for (Editora item : listaEditoras) { 
+                        cout << " > " << item.getNome() << endl;
+                    }
+                } 
+
+                break; 
+            }                  
+
         }
+
+
+
+
+
+
+
     }
 
 
