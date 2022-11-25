@@ -113,7 +113,6 @@ class Editora {
         ~Editora() {
             cout << "- Destrutor " << this->nome << endl;
         }        
-
 };
 
 
