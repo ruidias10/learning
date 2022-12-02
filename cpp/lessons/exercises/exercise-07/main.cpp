@@ -236,7 +236,7 @@ vector<Escola*> builderEscola(int length) {
     return listaEscolas;
 }
 
-void showDataInMemory(vector<Escola*> listaEscolas = {}) {
+void showAllDataInMemory(vector<Escola*> listaEscolas = {}) {
     for (Escola* escola : listaEscolas) {
         cout << "Escola"
              << " - Nome: " << escola->getNome()
@@ -464,7 +464,7 @@ void updateClasse(int numero, int identificador, vector<Escola*> &listaEscolas) 
 
             for (Turma* turma : escola->getTurmas()) {
                 if (turma->getIdentificador()  == identificador) {
-                    listaEscolas[escolaKey]->turmas.erase(listaEscolas[escolaKey]->turmas.begin() + turmaKey);
+                    //listaEscolas[escolaKey]->turmas.erase(listaEscolas[escolaKey]->turmas.begin() + turmaKey);
                     listaEscolas[escolaKey]->turmas[turmaKey]->setAno(ano);
                     listaEscolas[escolaKey]->turmas[turmaKey]->setIdentificador(novoIdentificador);
                    break; 
@@ -480,6 +480,170 @@ void updateClasse(int numero, int identificador, vector<Escola*> &listaEscolas) 
     }  
 }
 
+void showStudents(int numero, int identificador, vector<Escola*> &listaEscolas) {
+    for (Escola* escola : listaEscolas) {
+        if (escola->getNumero() == numero) {
+
+            for (Turma* turma : escola->getTurmas()) {
+                if (turma->getIdentificador()  == identificador) {
+                    for (Aluno* aluno : turma->getAlunos()) {
+                        cout << "     Aluno"
+                            << " - Nome: " << aluno->getNome()
+                            << " - CC: " << aluno->getCartaoCidadao() 
+                            << endl;                
+                    }
+                   break; 
+                }
+            } 
+
+            break;           
+        } 
+    } 
+}
+
+
+void addStudent(int numero, int identificador, vector<Escola*> &listaEscolas) {
+    string nome;
+    int cartaoCidadao;
+
+    cout << "Indique o cartao de cidacao do aluno: ";
+    cin >> cartaoCidadao;  
+
+    cout << "Indique o nome do aluno: ";  
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+    getline(cin, nome);
+
+    Aluno* aluno = new Aluno(nome, cartaoCidadao);
+
+    int escolaKey = 0;
+    int turmaKey = 0;
+
+    for (Escola* escola : listaEscolas) {
+        if (escola->getNumero() == numero) {
+
+            for (Turma* turma : escola->getTurmas()) {
+                if (turma->getIdentificador()  == identificador) {
+                    listaEscolas[escolaKey]->turmas[turmaKey]->alunos.push_back(aluno);
+                   break; 
+                }
+
+                turmaKey++;
+            } 
+
+            break;           
+        }
+
+        escolaKey++;
+    }    
+}
+
+void deleteStudent(int numero, int identificador, int cartaoCidadao, vector<Escola*> &listaEscolas) {
+    int escolaKey = 0;
+    int turmaKey = 0;
+    int alunoKey = 0;
+    for (Escola* escola : listaEscolas) {
+        if (escola->getNumero() == numero) {
+
+            for (Turma* turma : escola->getTurmas()) {
+                if (turma->getIdentificador()  == identificador) {
+
+                    for (Aluno* aluno : turma->getAlunos()) {
+                        if (aluno->getCartaoCidadao() == cartaoCidadao) {
+                            listaEscolas[escolaKey]->turmas[turmaKey]->alunos.erase(listaEscolas[escolaKey]->turmas[turmaKey]->alunos.begin() + alunoKey);
+                            break;
+                        }
+                        alunoKey++;
+                    }
+
+                    break; 
+                }
+
+                turmaKey++;
+            } 
+
+            break;           
+        }
+
+        escolaKey++;
+    }
+}
+
+void updateStudent(int numero, int identificador, int cartaoCidadao, vector<Escola*> &listaEscolas) {
+    string nome;
+    int novoCartaoCidadao;
+
+    cout << "Indique o cartao de cidacao do aluno: ";
+    cin >> novoCartaoCidadao;  
+
+    cout << "Indique o nome do aluno: ";  
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+    getline(cin, nome);
+
+
+    int escolaKey = 0;
+    int turmaKey = 0;
+    int alunoKey = 0;
+    for (Escola* escola : listaEscolas) {
+        if (escola->getNumero() == numero) { 
+
+            for (Turma* turma : escola->getTurmas()) {
+                if (turma->getIdentificador()  == identificador) {
+
+                    for (Aluno* aluno : turma->getAlunos()) {
+                        if (aluno->getCartaoCidadao() == cartaoCidadao) {
+                            listaEscolas[escolaKey]->turmas[turmaKey]->alunos[alunoKey]->setNome(nome);
+                            listaEscolas[escolaKey]->turmas[turmaKey]->alunos[alunoKey]->setCartaoCidadao(novoCartaoCidadao);
+                            break;
+                        }
+                        alunoKey++;
+                    }
+
+                    break; 
+                }
+
+                turmaKey++;
+            } 
+
+            break;           
+        }
+
+        escolaKey++;
+    }
+
+}
+
+
+
+int mainOptionMenu() {
+
+    int inputInt;
+    bool isValid = false;
+
+    do {
+        cout << endl;
+        cout << "---------------------------------------------" << endl;
+        cout << "    MENU DAS ESCOLAS (Escolha uma opcao)     " << endl;
+        cout << "---------------------------------------------" << endl;
+
+        cout << "\t[20] - Gerar dados automaticamente (random)" << endl;
+        cout << "\t[30] - Gerir Escolas" << endl;
+        cout << "\t[40] - Gerir Turmas" << endl;
+        cout << "\t[50] - Gerir Alunos" << endl;
+
+        cout << endl;
+        cout << "\t[0] - Sair" << endl;
+        
+        cin >> inputInt;  
+        isValid = (inputInt == 20 || inputInt == 30 || inputInt == 40 || inputInt == 50 || inputInt == 0);
+
+        if (!isValid) {
+            cout << "Infelizmente a opcao escolhida e invalida!" << endl;            
+        }
+
+    } while(!isValid);
+
+    return inputInt;
+}
 
 
 
@@ -494,52 +658,73 @@ int main() {
     vector<Escola*> listaEscolas = {};
 
     while (continuar) {
-        cout << endl;
-        cout << "MENU DAS ESCOLAS (Escolha uma opcao:)" << endl;
-            cout << "\t[1 ok] - Criar dados automaticamente (random)" << endl;
-            cout << "\t[2 ok] - Listar todos os dados em memoria" << endl;
-            cout << endl;
 
-            //cout << "\t[31 ok] - Escolas" << endl;
-            //cout << "\t[32 ok] - Turmas" << endl;
-            //cout << "\t[33 ok] - Alunos" << endl;
-
-            cout << "\t[3 ok] - Listar as escolas" << endl;
-            cout << "\t[4 ok] - Adicionar uma escola" << endl;
-            cout << "\t[5 ok] - Ver uma escola" << endl;
-            cout << "\t[6 ok] - Eliminar uma escola" << endl;
-            cout << "\t[7 ok] - Editar a escola" << endl;
-
-            cout << "\t[8 ok] - Listar as turmas de uma escola" << endl; 
-            cout << "\t[9 ok] - Criar uma nova turma" << endl; 
-            cout << "\t[10 ok] - Eliminar uma turma" << endl; 
-            cout << "\t[11 ok] - Editar uma turma" << endl;
-
-            cout << "\t[12] - Listar os alunos de uma turma" << endl;
-
-        cout << endl;
-        cout << "\t[0] - Sair" << endl;
-        //cout << "\t[0] - Menu principal" << endl;
-
-        cout << endl;
-        cout << endl;    
+        inputInt = mainOptionMenu();
         
-        
-        
-        
-        cout << "\t[-] - Criar um novo aluno" << endl;
-        cout << "\t[-] - Eliminar um aluno" << endl;
-        cout << "\t[-] - Editar um aluno" << endl;
-
-        cin >> inputInt;
 
         switch (inputInt) {
-            case 0:
-            {
-                //Sair
+            case 0: { // sair
                 continuar = false;
+                return 0;
                 break; 
             } 
+
+            case 20: {
+                cout << "---------------------------------------------" << endl;
+                cout << "    GERAR DADOS AUTOMATICAMENTE     " << endl;
+                cout << "---------------------------------------------" << endl;               
+                cout << "\t[1] - Criar dados automaticamente (random)" << endl;
+                cout << "\t[2] - Listar todos os dados em memoria" << endl;
+                break; 
+            }             
+
+            case 30: { // escolas
+                cout << endl;
+                cout << "---------------------------------------------" << endl;
+                cout << "    ESCOLAS     " << endl;
+                cout << "---------------------------------------------" << endl;            
+                cout << "\t[3 ok] - Listar as escolas" << endl;
+                cout << "\t[4 ok] - Adicionar uma escola" << endl;
+                cout << "\t[5 ok] - Ver uma escola" << endl;
+                cout << "\t[6 ok] - Eliminar uma escola" << endl;
+                cout << "\t[7 ok] - Editar a escola" << endl;
+                break; 
+            } 
+
+            case 40: { // turmas 
+                cout << "---------------------------------------------" << endl;
+                cout << "    TURMAS     " << endl;
+                cout << "---------------------------------------------" << endl;                         
+                cout << "\t[8 ok] - Listar as turmas de uma escola" << endl; 
+                cout << "\t[9 ok] - Criar uma nova turma" << endl; 
+                cout << "\t[10 ok] - Eliminar uma turma" << endl; 
+                cout << "\t[11 ok] - Editar uma turma" << endl;
+                break; 
+            } 
+
+            case 50: { // alunos
+                cout << "---------------------------------------------" << endl;
+                cout << "    ALUNOS     " << endl;
+                cout << "---------------------------------------------" << endl;                        
+                cout << "\t[12] - Listar os alunos de uma turma" << endl;
+                cout << "\t[13] - Criar um novo aluno" << endl;
+                cout << "\t[14] - Eliminar um aluno" << endl;
+                cout << "\t[15] - Editar um aluno" << endl;
+                break; 
+            } 
+
+
+
+        }
+
+
+        cout << endl;
+
+
+        cin >> inputInt;
+        
+
+        switch (inputInt) {
 
             case 1:
             {
@@ -551,7 +736,7 @@ int main() {
             case 2:
             {
                 //Listar todos os dados em memoria
-                showDataInMemory(listaEscolas);
+                showAllDataInMemory(listaEscolas);
                 break; 
             } 
 
@@ -624,11 +809,13 @@ int main() {
                 //Eliminar uma turma
                 int numeroEscola;
                 int identificador;
+
                 cout << "Indique o numero da escola para remover uma turma: ";
                 cin >> numeroEscola;
 
                 cout << "Indique o identificador da turma: ";
-                cin >> identificador;                
+                cin >> identificador;  
+
                 deleteClasse(numeroEscola, identificador, listaEscolas);
                 break;                
             }
@@ -638,14 +825,89 @@ int main() {
                 //Editar uma turma
                 int numeroEscola;
                 int identificador;
+
                 cout << "Indique o numero da escola para editar uma turma: ";
                 cin >> numeroEscola;
 
                 cout << "Indique o identificador da turma: ";
-                cin >> identificador;                
+                cin >> identificador;  
+
                 updateClasse(numeroEscola, identificador, listaEscolas);
                 break;                
-            }            
+            }    
+
+            case 12: 
+            {
+                //Listar os alunos de uma turma
+                int numeroEscola;
+                int identificador;
+
+                cout << "Indique o numero da escola para listar os alunos de uma turma: ";
+                cin >> numeroEscola;
+
+                cout << "Indique o identificador da turma para ver os alunos: ";
+                cin >> identificador;  
+
+                showStudents(numeroEscola, identificador, listaEscolas);
+                break;                                   
+            }
+
+            case 13:
+            {
+                //Criar um novo aluno
+                int numeroEscola;
+                int identificador;
+
+                cout << "Indique o numero da escola para listar os alunos de uma turma: ";
+                cin >> numeroEscola;
+
+                cout << "Indique o identificador da turma para ver os alunos: ";
+                cin >> identificador;  
+
+                addStudent(numeroEscola, identificador, listaEscolas);
+                break;                       
+            }
+
+            case 14:
+            {
+                //Eliminar um aluno
+                int numeroEscola;
+                int identificador;
+                int cartaoCidadao;
+
+                cout << "Indique o numero da escola onde quer apagar um aluno: ";
+                cin >> numeroEscola;
+
+                cout << "Indique o identificador da turma onde quer apagar um aluno: ";
+                cin >> identificador;  
+
+                cout << "Indique cartao de cidadao do aluno que quer apagar: ";
+                cin >> cartaoCidadao;                  
+
+                deleteStudent(numeroEscola, identificador, cartaoCidadao, listaEscolas);
+                break;                   
+            }
+
+            case 15: 
+            {
+                //Editar um aluno
+                int numeroEscola;
+                int identificador;
+                int cartaoCidadao;
+
+                cout << "Indique o numero da escola onde quer editar o aluno: ";
+                cin >> numeroEscola;
+
+                cout << "Indique o identificador da turma onde quer editar o aluno: ";
+                cin >> identificador;  
+
+                cout << "Indique cartao de cidadao do aluno que quer editar: ";
+                cin >> cartaoCidadao;                  
+
+                updateStudent(numeroEscola, identificador, cartaoCidadao, listaEscolas);
+                break;                    
+            }
+
 
                       
 
