@@ -31,7 +31,7 @@ class Helper {
             string name = "";
 
             for (int i = 0; i< length; i++) {
-                name = name + alpha[helperGeraInt(ch_MAX)];
+                name = name + alpha[Helper::randomNumbers(ch_MAX)];
             }
 
             if (name == "") {
@@ -47,41 +47,6 @@ class Helper {
             return name;
         }               
 };
-
-
-
-// Cria um inteiro aleatorios
-int helperGeraInt(int length = 60000) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(1, length);
-
-    return dis(gen);
-}
-
-// Cria uma string capitalize de comprimento variavel
-string helperGeraString(int length) {
-    int ch_MAX = 26;
-    char alpha[ch_MAX] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };  
-
-    string name = "";
-
-    for (int i = 0; i< length; i++) {
-        name = name + alpha[helperGeraInt(ch_MAX)];
-    }
-
-    if (name == "") {
-        return "Default";
-    }
-
-    if (name[0] == ' ') {
-        name[0] = 'a';
-    }
-
-    name[0] = toupper(name[0]);     
-
-    return name;
-}
 
 
 
@@ -154,7 +119,7 @@ class Turma {
         void setIdentificador(int identificador) {
             if (identificador < 0) {
                 cout << "> O identificador da turma tem de ser um numero inteiro positivo" << endl;  
-                this->identificador = helperGeraInt(1000);
+                this->identificador = Helper::randomNumbers(1000);
                 return;
             }
             
@@ -226,10 +191,10 @@ vector<Aluno*> builderAlunos(int length) {
     vector<Aluno*> listaAlunos = {};
 
     for (int i = 0; i < length; i++) {
-        int cartaoCidadao = helperGeraInt();
+        int cartaoCidadao = Helper::randomNumbers();
 
-        string nome = helperGeraString(helperGeraInt(10));
-        string sobreNome = helperGeraString(helperGeraInt(20));
+        string nome = Helper::randomWords(Helper::randomNumbers(10));
+        string sobreNome = Helper::randomWords(Helper::randomNumbers(20));
         string nomeCompleto = nome + " " + sobreNome;
 
         Aluno* a = new Aluno(nomeCompleto, cartaoCidadao); 
@@ -243,8 +208,8 @@ vector<Turma*> builderTurmas(vector<Aluno*> listaAlunos, int length) {
     vector<Turma*> listaTurmas = {};
 
     for (int i = 0; i < length; i++) {
-        int identificador = helperGeraInt(100);
-        string ano = to_string(helperGeraInt(12)) + helperGeraString(1);
+        int identificador = Helper::randomNumbers(100);
+        string ano = to_string(Helper::randomNumbers(12)) + Helper::randomWords(1);
         
         Turma* turma = new Turma(ano, identificador, listaAlunos); 
         listaTurmas.push_back(turma);
@@ -257,12 +222,12 @@ vector<Escola*> builderEscola(int length) {
     vector<Escola*> listaEscolas = {};
 
     for (int i = 0; i < length; i++) {
-        int numero = helperGeraInt(12);
-        string nome = helperGeraString(helperGeraInt(10));
-        string localidade = helperGeraString(helperGeraInt(20));
+        int numero = Helper::randomNumbers(12);
+        string nome = Helper::randomWords(Helper::randomNumbers(10));
+        string localidade = Helper::randomWords(Helper::randomNumbers(20));
 
-        vector<Aluno*> listaAlunos = builderAlunos(helperGeraInt(15));
-        vector<Turma*> listaTurmas = builderTurmas(listaAlunos, helperGeraInt(5));
+        vector<Aluno*> listaAlunos = builderAlunos(Helper::randomNumbers(15));
+        vector<Turma*> listaTurmas = builderTurmas(listaAlunos, Helper::randomNumbers(5));
         
         Escola* escola = new Escola(numero, nome, localidade, listaTurmas);
         listaEscolas.push_back(escola);
@@ -455,6 +420,67 @@ void addClasse(int numero, vector<Escola*> &listaEscolas) {
 }
 
 
+void deleteClasse(int numero, int identificador, vector<Escola*> &listaEscolas) {
+    int escolaKey = 0;
+    int turmaKey = 0;
+    for (Escola* escola : listaEscolas) {
+        if (escola->getNumero() == numero) {
+
+            for (Turma* turma : escola->getTurmas()) {
+                if (turma->getIdentificador()  == identificador) {
+                    turma->alunos.clear();
+                    listaEscolas[escolaKey]->turmas.erase(listaEscolas[escolaKey]->turmas.begin() + turmaKey);
+                   break; 
+                }
+
+                turmaKey++;
+            } 
+
+            break;           
+        }
+
+        escolaKey++;
+    }
+}
+
+
+
+void updateClasse(int numero, int identificador, vector<Escola*> &listaEscolas) {
+    int novoIdentificador;
+    string ano;
+
+    cout << "Indique o novo identificador da turma: ";
+    cin >> novoIdentificador;
+
+    cout << "Indique o novo ano da turma: " ;   
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');  
+    getline(cin, ano); 
+
+    int escolaKey = 0;
+    int turmaKey = 0;
+
+    for (Escola* escola : listaEscolas) {
+        if (escola->getNumero() == numero) {
+
+            for (Turma* turma : escola->getTurmas()) {
+                if (turma->getIdentificador()  == identificador) {
+                    listaEscolas[escolaKey]->turmas.erase(listaEscolas[escolaKey]->turmas.begin() + turmaKey);
+                    listaEscolas[escolaKey]->turmas[turmaKey]->setAno(ano);
+                    listaEscolas[escolaKey]->turmas[turmaKey]->setIdentificador(novoIdentificador);
+                   break; 
+                }
+
+                turmaKey++;
+            } 
+
+            break;           
+        }
+
+        escolaKey++;
+    }  
+}
+
+
 
 
 
@@ -474,28 +500,33 @@ int main() {
             cout << "\t[2 ok] - Listar todos os dados em memoria" << endl;
             cout << endl;
 
-            cout << "\t[31 ok] - Escolas" << endl;
-            cout << "\t[32 ok] - Turmas" << endl;
-            cout << "\t[33 ok] - Alunos" << endl;
+            //cout << "\t[31 ok] - Escolas" << endl;
+            //cout << "\t[32 ok] - Turmas" << endl;
+            //cout << "\t[33 ok] - Alunos" << endl;
 
             cout << "\t[3 ok] - Listar as escolas" << endl;
             cout << "\t[4 ok] - Adicionar uma escola" << endl;
             cout << "\t[5 ok] - Ver uma escola" << endl;
             cout << "\t[6 ok] - Eliminar uma escola" << endl;
-            cout << "\t[7 ok] - Editar os atributos basicos da escola" << endl;
+            cout << "\t[7 ok] - Editar a escola" << endl;
+
             cout << "\t[8 ok] - Listar as turmas de uma escola" << endl; 
-            cout << "\t[9 ok] - Criar uma nova turma" << endl;  
+            cout << "\t[9 ok] - Criar uma nova turma" << endl; 
+            cout << "\t[10 ok] - Eliminar uma turma" << endl; 
+            cout << "\t[11 ok] - Editar uma turma" << endl;
+
+            cout << "\t[12] - Listar os alunos de uma turma" << endl;
 
         cout << endl;
         cout << "\t[0] - Sair" << endl;
-        cout << "\t[0] - Menu principal" << endl;
+        //cout << "\t[0] - Menu principal" << endl;
 
         cout << endl;
         cout << endl;    
         
-        cout << "\t[-] - Eliminar uma turma" << endl;
-        cout << "\t[-] - Editar uma turma" << endl;
-        cout << "\t[-] - Listar os alunos de uma turma" << endl;
+        
+        
+        
         cout << "\t[-] - Criar um novo aluno" << endl;
         cout << "\t[-] - Eliminar um aluno" << endl;
         cout << "\t[-] - Editar um aluno" << endl;
@@ -582,11 +613,39 @@ int main() {
             {
                 //Criar uma nova turma 
                 int numeroEscola;
-                cout << "Indique o numero da escola que adicionar uma turma: ";
+                cout << "Indique o numero da escola para adicionar uma turma: ";
                 cin >> numeroEscola;
                 addClasse(numeroEscola, listaEscolas);
                 break;
             } 
+
+            case 10: 
+            {
+                //Eliminar uma turma
+                int numeroEscola;
+                int identificador;
+                cout << "Indique o numero da escola para remover uma turma: ";
+                cin >> numeroEscola;
+
+                cout << "Indique o identificador da turma: ";
+                cin >> identificador;                
+                deleteClasse(numeroEscola, identificador, listaEscolas);
+                break;                
+            }
+
+            case 11: 
+            {
+                //Editar uma turma
+                int numeroEscola;
+                int identificador;
+                cout << "Indique o numero da escola para editar uma turma: ";
+                cin >> numeroEscola;
+
+                cout << "Indique o identificador da turma: ";
+                cin >> identificador;                
+                updateClasse(numeroEscola, identificador, listaEscolas);
+                break;                
+            }            
 
                       
 
