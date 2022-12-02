@@ -8,7 +8,9 @@
 
 // #include "meucodigo.hpp"
 // #pragma once // para nao haver includes repetidos
-
+//hastables
+//hashmap
+//map
 
 using namespace std;
 
@@ -78,6 +80,7 @@ class Aluno {
             return this->cartaoCidadao;
         }        
 };
+
 
 
 class Turma {
@@ -180,12 +183,6 @@ class Escola {
 };
 
 
-class Builder {
-
-};
-
-
-
 
 vector<Aluno*> builderAlunos(int length) {
     vector<Aluno*> listaAlunos = {};
@@ -263,11 +260,6 @@ void showAllDataInMemory(vector<Escola*> listaEscolas = {}) {
         cout << endl;
     }
 }
-
-
-
-
-
 
 void listSchools(vector<Escola*> listaEscolas = {}) {
     for (Escola* escola : listaEscolas) {
@@ -394,7 +386,6 @@ void addSchool(vector<Escola*> &listaEscolas) {
     listaEscolas.push_back(escola);
 }
 
-
 void addClasse(int numero, vector<Escola*> &listaEscolas) {
     int identificador;
     string ano;
@@ -419,10 +410,10 @@ void addClasse(int numero, vector<Escola*> &listaEscolas) {
     }
 }
 
-
 void deleteClasse(int numero, int identificador, vector<Escola*> &listaEscolas) {
     int escolaKey = 0;
     int turmaKey = 0;
+
     for (Escola* escola : listaEscolas) {
         if (escola->getNumero() == numero) {
 
@@ -443,9 +434,10 @@ void deleteClasse(int numero, int identificador, vector<Escola*> &listaEscolas) 
     }
 }
 
-
-
 void updateClasse(int numero, int identificador, vector<Escola*> &listaEscolas) {
+    int escolaKey = 0;
+    int turmaKey = 0;
+
     int novoIdentificador;
     string ano;
 
@@ -455,9 +447,6 @@ void updateClasse(int numero, int identificador, vector<Escola*> &listaEscolas) 
     cout << "Indique o novo ano da turma: " ;   
     cin.ignore(numeric_limits<streamsize>::max(), '\n');  
     getline(cin, ano); 
-
-    int escolaKey = 0;
-    int turmaKey = 0;
 
     for (Escola* escola : listaEscolas) {
         if (escola->getNumero() == numero) {
@@ -501,8 +490,10 @@ void showStudents(int numero, int identificador, vector<Escola*> &listaEscolas) 
     } 
 }
 
-
 void addStudent(int numero, int identificador, vector<Escola*> &listaEscolas) {
+    int escolaKey = 0;
+    int turmaKey = 0;
+
     string nome;
     int cartaoCidadao;
 
@@ -514,9 +505,6 @@ void addStudent(int numero, int identificador, vector<Escola*> &listaEscolas) {
     getline(cin, nome);
 
     Aluno* aluno = new Aluno(nome, cartaoCidadao);
-
-    int escolaKey = 0;
-    int turmaKey = 0;
 
     for (Escola* escola : listaEscolas) {
         if (escola->getNumero() == numero) {
@@ -541,6 +529,7 @@ void deleteStudent(int numero, int identificador, int cartaoCidadao, vector<Esco
     int escolaKey = 0;
     int turmaKey = 0;
     int alunoKey = 0;
+
     for (Escola* escola : listaEscolas) {
         if (escola->getNumero() == numero) {
 
@@ -569,6 +558,10 @@ void deleteStudent(int numero, int identificador, int cartaoCidadao, vector<Esco
 }
 
 void updateStudent(int numero, int identificador, int cartaoCidadao, vector<Escola*> &listaEscolas) {
+    int escolaKey = 0;
+    int turmaKey = 0;
+    int alunoKey = 0;
+
     string nome;
     int novoCartaoCidadao;
 
@@ -579,10 +572,6 @@ void updateStudent(int numero, int identificador, int cartaoCidadao, vector<Esco
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
     getline(cin, nome);
 
-
-    int escolaKey = 0;
-    int turmaKey = 0;
-    int alunoKey = 0;
     for (Escola* escola : listaEscolas) {
         if (escola->getNumero() == numero) { 
 
@@ -612,10 +601,7 @@ void updateStudent(int numero, int identificador, int cartaoCidadao, vector<Esco
 
 }
 
-
-
 int mainOptionMenu() {
-
     int inputInt;
     bool isValid = false;
 
@@ -646,12 +632,7 @@ int mainOptionMenu() {
 }
 
 
-
-
-
 int main() {
-
-    // =======================================================================
     int inputInt;
     string inputString;
     bool continuar = true;
@@ -663,10 +644,9 @@ int main() {
         
 
         switch (inputInt) {
-            case 0: { // sair
+            case 0: {
                 continuar = false;
                 return 0;
-                break; 
             } 
 
             case 20: {
@@ -675,10 +655,11 @@ int main() {
                 cout << "---------------------------------------------" << endl;               
                 cout << "\t[1] - Criar dados automaticamente (random)" << endl;
                 cout << "\t[2] - Listar todos os dados em memoria" << endl;
+                cout << endl;
                 break; 
             }             
 
-            case 30: { // escolas
+            case 30: {
                 cout << endl;
                 cout << "---------------------------------------------" << endl;
                 cout << "    ESCOLAS     " << endl;
@@ -688,10 +669,11 @@ int main() {
                 cout << "\t[5 ok] - Ver uma escola" << endl;
                 cout << "\t[6 ok] - Eliminar uma escola" << endl;
                 cout << "\t[7 ok] - Editar a escola" << endl;
+                cout << endl;
                 break; 
             } 
 
-            case 40: { // turmas 
+            case 40: {
                 cout << "---------------------------------------------" << endl;
                 cout << "    TURMAS     " << endl;
                 cout << "---------------------------------------------" << endl;                         
@@ -699,10 +681,11 @@ int main() {
                 cout << "\t[9 ok] - Criar uma nova turma" << endl; 
                 cout << "\t[10 ok] - Eliminar uma turma" << endl; 
                 cout << "\t[11 ok] - Editar uma turma" << endl;
+                cout << endl;
                 break; 
             } 
 
-            case 50: { // alunos
+            case 50: {
                 cout << "---------------------------------------------" << endl;
                 cout << "    ALUNOS     " << endl;
                 cout << "---------------------------------------------" << endl;                        
@@ -710,15 +693,10 @@ int main() {
                 cout << "\t[13] - Criar um novo aluno" << endl;
                 cout << "\t[14] - Eliminar um aluno" << endl;
                 cout << "\t[15] - Editar um aluno" << endl;
+                cout << endl;
                 break; 
             } 
-
-
-
         }
-
-
-        cout << endl;
 
 
         cin >> inputInt;
@@ -906,21 +884,9 @@ int main() {
 
                 updateStudent(numeroEscola, identificador, cartaoCidadao, listaEscolas);
                 break;                    
-            }
-
-
-                      
-
-                                    
-
-                                                             
+            }                                                
         }
     }
-
-    
-
-
-
 
     cout << endl;
 
