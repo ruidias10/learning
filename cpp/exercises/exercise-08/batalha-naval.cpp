@@ -3,6 +3,12 @@
 #include <string>
 #include <vector>
 
+/*
+1a, 1b
+4a, 5a, 6a
+3e, 4e, 5e, 6e
+*/
+
 using namespace std;
 
 string tolowercase(string input) {
@@ -55,6 +61,13 @@ public:
     void toggleIsPlaying() {
         this->isPlaying = !this->isPlaying;
     }
+
+    void echoPlayerInfo() {
+        cout << "----------------------------------" << endl;
+        cout << "Tabuleiro do jogador " << this->getName() << endl;
+        cout << "Vitorias: " << this->getWins() << endl;
+        cout << "----------------------------------" << endl;
+    }    
 };
 
 class Ship {
@@ -105,6 +118,23 @@ public:
         }
     }
 
+    int xxxxxx(string position) {
+        int irow, icolumn;
+        string column;
+        char ccolumn;
+
+        irow = stoi(position.substr (0,1));
+        column = tolowercase(position.substr (1,1));
+
+        ccolumn = column[0];
+        icolumn = ccolumn;
+        icolumn = icolumn - 96;
+
+        cout << "irow " << irow << " icolumn " << icolumn;
+
+        return irow + icolumn;
+    }
+
     bool shipAttackPosition(string position) {
         int irow, icolumn;
         string column;
@@ -117,6 +147,13 @@ public:
         icolumn = ccolumn;
         icolumn = icolumn - 97;
 
+        //for (int i = 0; i < this->shipPositions.size(); i++) {
+        //    cout << "POSITIONNNNN " << shipPositions[i] << " --- "; 
+        //    this->xxxxxx(shipPositions[i]);
+        //    cout << endl;
+        //}        
+        //Tabuleiro do jogador
+
         if ((irow >= 0 && irow < 7) && (icolumn >= 0 && icolumn < 7)) {
             if (this->matriz[irow][icolumn] == 'B') {
 
@@ -124,25 +161,95 @@ public:
 
                 // barco ao fundo
                 int cnt = 0;
-                bool isLime = false;
+
+                bool isLine = false;
                 for (int i = 0; i < this->ROWS; i++) {
                     for (int j = 0; j < this->COLUMNS; j++) {
                         
-                        if (this->matriz[i][j] == '*') {
-                            cnt++;
+                        if (i == irow && j == icolumn) {
+                            isLine = true;
                         }
 
-                        if (i == irow && j == icolumn) {
-                            isLime = true;
-                       }
+                        if (this->matriz[i][j] == '*') {
+                            cnt++;
+
+
+                            if (i>0 && i<7) {
+                                if (this->matriz[i-1][j] == 'B') {
+                                    cnt--;
+                                    continue;
+                                }
+                                else if (this->matriz[i+1][j] == 'B') {
+                                    cnt--;
+                                    continue;
+                                }                                
+                            }
+
+                            if (i == 0) {
+                                if (this->matriz[i+1][j] == 'B') {
+                                    cnt--;
+                                    continue;
+                                }
+                                else if (this->matriz[i+2][j] == 'B') {
+                                    cnt--;
+                                    continue;
+                                }                                
+                            }   
+
+                            if (i == 7) {
+                                if (this->matriz[i-1][j] == 'B') {
+                                    cnt--;
+                                    continue;
+                                }
+                                else if (this->matriz[i-2][j] == 'B') {
+                                    cnt--;
+                                    continue;
+                                }                                
+                            } 
+
+
+
+                            if (j>0 && j < 7) {
+                                if (this->matriz[i][j-1] == 'B') {
+                                    cnt--;
+                                    continue;
+                                }
+                                else if (this->matriz[i][j+1] == 'B') {
+                                    cnt--;
+                                    continue;
+                                }                                
+                            }
+
+                            if (j == 0) {
+                                if (this->matriz[i][j+1] == 'B') {
+                                    cnt--;
+                                    continue;
+                                }
+                                else if (this->matriz[i][j+2] == 'B') {
+                                    cnt--;
+                                    continue;
+                                }                                
+                            }   
+
+                            if (j == 7) {
+                                if (this->matriz[i][j-1] == 'B') {
+                                    cnt--;
+                                    continue;
+                                }
+                                else if (this->matriz[i][j-2] == 'B') {
+                                    cnt--;
+                                    continue;
+                                }                                
+                            }                                                         
+
+                        }
                     }
                 }  
-
-                cout << "cntcntcntcntcntcnt " << cnt << endl;
                 
-                if (isLime && cnt > 1) {
+                if (isLine && cnt > 1) {
                     printf("\033[0;32mBarco de %d quadrados ao fundo!\033[0m\n", cnt);
-                }               
+                } 
+
                 
                 return true;
             }
@@ -157,6 +264,7 @@ public:
 
         return false;
     }
+
 
     bool addShipPosition(vector<string> positions) {
         for (int i = 0; i < positions.size(); i++) {
@@ -224,11 +332,6 @@ public:
         }   
     }
 
-    void playerInfo() {
-        cout << "Tabuleiro do jogador " << player->getName() << endl;
-        cout << "Vitorias: " << player->getWins() << endl;
-        cout << "----------------------------" << endl;
-    }
 
     void debug() {
         cout << "  ";
@@ -293,27 +396,27 @@ public:
 
 
         cout << endl;
-        this->board1->playerInfo();
+        this->player1->echoPlayerInfo();
         //this->board1->debug();
         this->playerChooseChipsPositions(this->player1, this->board1);
 
         cout << endl;
-        cout << endl;
-
-        this->board2->playerInfo();
+        this->player2->echoPlayerInfo();
         //this->board2->debug();        
         this->playerChooseChipsPositions(this->player2, this->board2);
 
-        
-        this->playersChooseAttack(this->player1, this->board2);
-        this->playersChooseAttack(this->player2, this->board1);
+        while(true) {
+            cout << endl;
+            this->player1->echoPlayerInfo();
+            this->playersChooseAttack(this->player1, this->board2);
+
+            cout << endl;
+            this->player2->echoPlayerInfo();
+            this->playersChooseAttack(this->player2, this->board1);
+        }
     }
 
     void playersChooseAttack(Player* player, Board* board) {
-//1a, 1b
-//4a, 5a, 6a
-//3e, 4e, 5e, 6e
-
         int shots = 3;
         string position;
 
@@ -323,7 +426,8 @@ public:
 
          do {
             cout << player->getName() << " tem " << shots << " jogadas" << endl;
-            cout << "indique a posicao para atacar : exemplo (1a) ";
+            cout << "indique a posicao para atacar: exemplo (1a)" << endl;
+            cout << "----------------------------" << endl;
 
             getline(cin, position);
 
@@ -331,7 +435,7 @@ public:
                 printf("\033[0;32mOtima jogada..\033[0m");
                 cout << endl;    
             } else {
-                printf("\033[0;31mAinda nao foi desta! Tente novamente.\033[0m");
+                printf("\033[0;31mAcertou na agua!\033[0m");
                 cout << endl;                
             }
 
