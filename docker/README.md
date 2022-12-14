@@ -17,5 +17,5 @@ $ docker container ls -a
 # lista todos os containers
 
 $ docker container run -ti hello-world    
-# executa container em modo interativo e ter interatividade
+# executa container em modo interativo
 ```
