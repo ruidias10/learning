@@ -63,11 +63,19 @@ public:
     }
 
     void echoPlayerInfo() {
-        cout << "----------------------------------" << endl;
-        cout << "Tabuleiro do jogador " << this->getName() << endl;
-        cout << "Vitorias: " << this->getWins() << endl;
-        cout << "----------------------------------" << endl;
-    }    
+      cout << "----------------------------------" << endl;
+      cout << "Jogador: " << this->getName() << endl;
+      cout << "Vitorias: " << this->getWins() << endl;
+      cout << "----------------------------------" << endl;
+    } 
+
+    void echoPlayerWin() {
+      cout << "----------------------------------" << endl;
+      printf("\033[0;32mParabens! Parabens! Parabens! \033[0m");
+      cout << endl << "O jogador " << this->getName() << " venceu!!!"<< endl;
+      cout << "Vitorias: " << this->getWins() << endl;
+      cout << "----------------------------------" << endl;
+    }       
 };
 
 class Ship {
@@ -93,6 +101,10 @@ class Board {
 private:
     Player* player;
     vector<string> shipPositions;
+    
+    vector<string> shipSizeTwo;
+    vector<string> shipSizeThree;
+    vector<string> shipSizeFour;
 
     char** matriz;
     char defaultChar;
@@ -118,23 +130,10 @@ public:
         }
     }
 
-    int xxxxxx(string position) {
-        int irow, icolumn;
-        string column;
-        char ccolumn;
-
-        irow = stoi(position.substr (0,1));
-        column = tolowercase(position.substr (1,1));
-
-        ccolumn = column[0];
-        icolumn = ccolumn;
-        icolumn = icolumn - 96;
-
-        cout << "irow " << irow << " icolumn " << icolumn;
-
-        return irow + icolumn;
+    bool thereAreShipsToAttack() {
+      return !(this->shipSizeTwo.empty() && this->shipSizeThree.empty() && this->shipSizeFour.empty());
     }
-
+    
     bool shipAttackPosition(string position) {
         int irow, icolumn;
         string column;
@@ -147,127 +146,56 @@ public:
         icolumn = ccolumn;
         icolumn = icolumn - 97;
 
-        //for (int i = 0; i < this->shipPositions.size(); i++) {
-        //    cout << "POSITIONNNNN " << shipPositions[i] << " --- "; 
-        //    this->xxxxxx(shipPositions[i]);
-        //    cout << endl;
-        //}        
-        //Tabuleiro do jogador
-
         if ((irow >= 0 && irow < 7) && (icolumn >= 0 && icolumn < 7)) {
             if (this->matriz[irow][icolumn] == 'B') {
 
                 this->matriz[irow][icolumn] = '*';
 
                 // barco ao fundo
-                int cnt = 0;
-
-                bool isLine = false;
-                for (int i = 0; i < this->ROWS; i++) {
-                    for (int j = 0; j < this->COLUMNS; j++) {
-                        
-                        if (i == irow && j == icolumn) {
-                            isLine = true;
-                        }
-
-                        if (this->matriz[i][j] == '*') {
-                            cnt++;
-
-
-                            if (i>0 && i<7) {
-                                if (this->matriz[i-1][j] == 'B') {
-                                    cnt--;
-                                    continue;
-                                }
-                                else if (this->matriz[i+1][j] == 'B') {
-                                    cnt--;
-                                    continue;
-                                }                                
-                            }
-
-                            if (i == 0) {
-                                if (this->matriz[i+1][j] == 'B') {
-                                    cnt--;
-                                    continue;
-                                }
-                                else if (this->matriz[i+2][j] == 'B') {
-                                    cnt--;
-                                    continue;
-                                }                                
-                            }   
-
-                            if (i == 7) {
-                                if (this->matriz[i-1][j] == 'B') {
-                                    cnt--;
-                                    continue;
-                                }
-                                else if (this->matriz[i-2][j] == 'B') {
-                                    cnt--;
-                                    continue;
-                                }                                
-                            } 
-
-
-
-                            if (j>0 && j < 7) {
-                                if (this->matriz[i][j-1] == 'B') {
-                                    cnt--;
-                                    continue;
-                                }
-                                else if (this->matriz[i][j+1] == 'B') {
-                                    cnt--;
-                                    continue;
-                                }                                
-                            }
-
-                            if (j == 0) {
-                                if (this->matriz[i][j+1] == 'B') {
-                                    cnt--;
-                                    continue;
-                                }
-                                else if (this->matriz[i][j+2] == 'B') {
-                                    cnt--;
-                                    continue;
-                                }                                
-                            }   
-
-                            if (j == 7) {
-                                if (this->matriz[i][j-1] == 'B') {
-                                    cnt--;
-                                    continue;
-                                }
-                                else if (this->matriz[i][j-2] == 'B') {
-                                    cnt--;
-                                    continue;
-                                }                                
-                            }                                                         
-
-                        }
+                for (int i = 0; i < this->shipSizeTwo.size(); i++) {
+                  if (position == this->shipSizeTwo[i]) {
+                    this->shipSizeTwo.erase(this->shipSizeTwo.begin()+ i);
+                    if (this->shipSizeTwo.empty()) {
+                      printf("\033[0;32mBarco de 2 quadrados ao fundo!\033[0m\n");
+                      return true;
                     }
-                }  
-                
-                if (isLine && cnt > 1) {
-                    printf("\033[0;32mBarco de %d quadrados ao fundo!\033[0m\n", cnt);
-                } 
+                  }
+                }
 
-                
+                for (int i = 0; i < this->shipSizeThree.size(); i++) {
+                  if (position == this->shipSizeThree[i]) {
+                    this->shipSizeThree.erase(this->shipSizeThree.begin()+ i);
+                    if (this->shipSizeThree.empty()) {
+                      printf("\033[0;32mBarco de 3 quadrados ao fundo!\033[0m\n");
+                      return true;
+                    }
+                  }
+                }
+
+                for (int i = 0; i < this->shipSizeFour.size(); i++) {
+                  if (position == this->shipSizeFour[i]) {
+                    this->shipSizeFour.erase(this->shipSizeFour.begin()+ i);
+                    if (this->shipSizeFour.empty()) {
+                      printf("\033[0;32mBarco de 4 quadrados ao fundo!\033[0m\n");
+                      return true;
+                    }
+                  }
+                }
+
                 return true;
             }
-
 
             if (this->matriz[irow][icolumn] != '*') {
                 this->matriz[irow][icolumn] = 'X';
             }
-            
-            return false;
         }
 
         return false;
     }
 
-
     bool addShipPosition(vector<string> positions) {
-        for (int i = 0; i < positions.size(); i++) {
+        int size = positions.size();
+        for (int i = 0; i < size; i++) {
             if (!this->isFreePosition(positions[i])) {
                 return false;
             }
@@ -276,9 +204,20 @@ public:
                 return false;
             }  
 
-            // falta validar se positions tem os elementos na orizontal ou na vertical          
+            // falta validar se positions tem os elementos juntos na orizontal ou na vertical
 
             this->shipPositions.push_back(positions[i]);
+
+            switch(size) {
+              case 2:
+                this->shipSizeTwo.push_back(positions[i]);
+                break;
+              case 3:
+                this->shipSizeThree.push_back(positions[i]);
+                break;
+              default:
+                this->shipSizeFour.push_back(positions[i]);
+            }        
         }
         
         this->updateShipPositionInMatriz();
@@ -298,7 +237,6 @@ public:
 
         return true;
     }
-
 
     bool isValidPosition(string position) {
         int irow, icolumn;
@@ -331,7 +269,6 @@ public:
             this->matriz[irow][icolumn] = 'B';
         }   
     }
-
 
     void debug() {
         cout << "  ";
@@ -382,7 +319,6 @@ public:
     }
 
     void run() {
-        
         this->printASCIILogo();
   
         string playerName1 = this->askPlayerName("primeiro");
@@ -394,27 +330,48 @@ public:
         this->board1 = new Board(player1);
         this->board2 = new Board(player2);
 
-
         cout << endl;
         this->player1->echoPlayerInfo();
-        //this->board1->debug();
         this->playerChooseChipsPositions(this->player1, this->board1);
 
         cout << endl;
         this->player2->echoPlayerInfo();
-        //this->board2->debug();        
         this->playerChooseChipsPositions(this->player2, this->board2);
 
-        while(true) {
+
+        do {
             cout << endl;
             this->player1->echoPlayerInfo();
+            this->player1->toggleIsPlaying();
             this->playersChooseAttack(this->player1, this->board2);
+
+            if (!this->board2->thereAreShipsToAttack()) {
+              break;
+            }
 
             cout << endl;
             this->player2->echoPlayerInfo();
+            this->player2->toggleIsPlaying();
             this->playersChooseAttack(this->player2, this->board1);
+            
+            if (!this->board1->thereAreShipsToAttack()) {
+              break;
+            }            
+
+        } while(true);
+
+        if (this->player1->getIsPlaying()) {
+          this->player1->addwin();
+          this->player1->echoPlayerWin();
         }
+        else {
+          this->player1->addwin();
+          this->player1->echoPlayerWin();
+        }
+
+        this->printASCIIWin();
     }
+
 
     void playersChooseAttack(Player* player, Board* board) {
         int shots = 3;
@@ -422,29 +379,32 @@ public:
 
         cout << endl;
         board->debug();
-        cout << endl;           
+        cout << endl;
 
          do {
-            cout << player->getName() << " tem " << shots << " jogadas" << endl;
-            cout << "indique a posicao para atacar: exemplo (1a)" << endl;
             cout << "----------------------------" << endl;
-
+            cout << player->getName() << " tem " << shots << " jogadas" << endl;
+            cout << "Indique a posicao para atacar: exemplo (1a): ";
+            
             getline(cin, position);
 
             if (board->shipAttackPosition(position)) {
                 printf("\033[0;32mOtima jogada..\033[0m");
-                cout << endl;    
             } else {
                 printf("\033[0;31mAcertou na agua!\033[0m");
-                cout << endl;                
             }
 
-            cout << endl;
+            cout << endl << endl;
             board->debug();
-            cout << endl;            
+            cout << endl;
 
             shots--;
-        } while(shots > 0);    
+
+            if (!board->thereAreShipsToAttack()) {
+              break;
+            }
+
+        } while(shots > 0);
     }
 
     void playerChooseChipsPositions(Player* player, Board* board) {
@@ -457,9 +417,6 @@ public:
             positions = this->askShipPosition(player, gridSpace);
 
             if (positions.size() == gridSpace && board->addShipPosition(positions)) {
-                //cout << endl;
-                //board->debug();
-                //cout << endl;
                 counter++;
             }
             else {
@@ -537,14 +494,26 @@ public:
         cout << "BATALHA NAVAL" << endl;
     }
 
+    void printASCIIWin() {
+        cout << "     _______________" << endl;
+        cout << "    |@@@@|     |####|" << endl;
+        cout << "    |@@@@|     |####|" << endl;        
+        cout << "    |@@@@|     |####|" << endl;        
+        cout << "    \\@@@@|     |####/" << endl;
+        cout << "     \\@@@|     |###/" << endl;        
+        cout << "      `@@|_____|##'" << endl;
+        cout << "           (O)'" << endl;                
+        cout << "        .-'''''-.'" << endl;                
+        cout << "      .'  * * *  `.'" << endl;                        
+        cout << "     :  *       *  :" << endl;                        
+        cout << "    : ~ A S C I I ~ :" << endl;                        
+        cout << "    : ~ A W A R D ~ :" << endl;                        
+        cout << "     :  *       *  :" << endl;                        
+        cout << "      `.  * * *  .'" << endl;
+        cout << "        `-.....-''" << endl; 
+        cout << "" << endl;          
+    }
 };
-
-
-
-
-
-
-
 
 
 int main() {
