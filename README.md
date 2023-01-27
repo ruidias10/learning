@@ -4,4 +4,4 @@ learning is a generic repository for studying some technologies:
 - python
     - sqlalchemy
     - django
-- cpp
+- c++
